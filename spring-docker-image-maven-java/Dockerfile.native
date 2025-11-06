@@ -1,0 +1,19 @@
+FROM alpine:3.22
+
+# Install runtime dependencies
+RUN apk add --no-cache \
+    ca-certificates \
+    curl \
+    gcompat \
+    tzdata
+
+WORKDIR /app
+
+# Copy Spring Boot layers in order of least to most frequently changing
+COPY target/docker ./
+
+# Expose port
+EXPOSE 8080
+
+# Run the application
+ENTRYPOINT ["sh", "-c", "/app/docker"]
